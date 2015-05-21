@@ -1,0 +1,9 @@
+#ChatLogin plugin default configuration
+---
+#show ChatLogin prefix
+show-prefix: true
+#Register message
+register-message: "&7Type your password in chat to register"
+#Login message
+login-message: "&7Type your password in chat to login"
+...
