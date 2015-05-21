@@ -1,0 +1,35 @@
+name: ChatLogin
+main: ChatLogin\Main
+version: "1.0"
+api: [1.11.0]
+load: STARTUP
+author: EvolSoft
+description: A ServerAuth extension to do login/register directly on chat
+website: http://www.evolsoft.tk
+
+commands:
+ chatlogin:
+  aliases: [chlogin]
+  description: ChatLogin Commands.
+  permission: chatlogin
+
+permissions:
+ chatlogin:
+  default: op
+  description: ChatLogin commands permissions.
+  children:
+   chatlogin.help:
+    default: op
+    description: Allows player to show plugin help.
+   chatlogin.info:
+    default: op
+    description: Allows player to read info about ChatLogin.
+   chatlogin.reload:
+    default: op
+    description: Allows player to reload ChatLogin.
+   chatlogin.register:
+    default: true
+    description: Allows player to do register in chat.
+   chatlogin.login:
+    default: true
+    description: Allows player to do login in chat.
