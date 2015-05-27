@@ -1,10 +1,10 @@
 <?php
 
 /*
- * ChatLogin (v1.0) by EvolSoft
+ * ChatLogin (v1.1) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 14/05/2015 05:59 PM (UTC)
+ * Date: 27/05/2015 02:20 PM (UTC)
  * Copyright & License: (C) 2015 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
@@ -14,6 +14,7 @@ namespace ChatLogin;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\Player;
 
 use ServerAuth\ServerAuth;
