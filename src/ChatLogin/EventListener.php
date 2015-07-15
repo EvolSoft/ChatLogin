@@ -1,10 +1,10 @@
 <?php
 
 /*
- * ChatLogin (v1.1) by EvolSoft
+ * ChatLogin (v1.2) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 27/05/2015 02:20 PM (UTC)
+ * Date: 15/07/2015 10:51 AM (UTC)
  * Copyright & License: (C) 2015 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
@@ -63,17 +63,20 @@ class EventListener implements Listener {
 					ServerAuth::getAPI()->authenticatePlayer($player, $event->getMessage());
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["register"]["register-success"]));
 				}elseif($status == ServerAuth::ERR_USER_ALREADY_REGISTERED){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["user-already-registered"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["register"]["already-registered"]));
 				}elseif($status == ServerAuth::ERR_PASSWORD_TOO_SHORT){
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["password-too-short"]));
 				}elseif($status == ServerAuth::ERR_PASSWORD_TOO_LONG){
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["password-too-long"]));
+				}elseif($status == ServerAuth::ERR_MAX_IP_REACHED){
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["max-ip-reached"]));
 				}else{
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["generic"]));
 				}
 			}else{
 				$player->sendMessage($this->plugin->translateColors("&", $prefix . "&cYou don't have permissions to register"));
 			}
+			$event->setMessage("");
 			$event->setCancelled(true);
 		}elseif(!ServerAuth::getAPI()->isPlayerAuthenticated($player)){
 			if($player->hasPermission("chatlogin.login")){
@@ -92,6 +95,7 @@ class EventListener implements Listener {
 			}else{
 				$player->sendMessage($this->plugin->translateColors("&", $prefix . "&cYou don't have permissions to login"));
 			}
+			$event->setMessage("");
 			$event->setCancelled(true);
 		}
 	}
