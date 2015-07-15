@@ -1,10 +1,10 @@
 <?php
 
 /*
- * ChatLogin (v1.1) by EvolSoft
+ * ChatLogin (v1.2) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 14/05/2015 05:54 PM (UTC)
+ * Date: 15/07/2015 10:47 AM (UTC)
  * Copyright & License: (C) 2015 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
@@ -28,7 +28,7 @@ class Main extends PluginBase {
 	const PRODUCER = "EvolSoft";
 	
 	/** @var string VERSION Plugin version */
-	const VERSION = "1.1";
+	const VERSION = "1.2";
 	
 	/** @var string MAIN_WEBSITE Plugin producer website */
 	const MAIN_WEBSITE = "http://www.evolsoft.tk";
