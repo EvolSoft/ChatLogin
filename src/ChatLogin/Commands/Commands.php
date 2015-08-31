@@ -1,7 +1,7 @@
 <?php
 
 /*
- * ChatLogin (v1.2) by EvolSoft
+ * ChatLogin (v1.3) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
  * Date: 14/05/2015 05:59 PM (UTC)

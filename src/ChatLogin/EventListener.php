@@ -1,10 +1,10 @@
 <?php
 
 /*
- * ChatLogin (v1.2) by EvolSoft
+ * ChatLogin (v1.3) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 15/07/2015 10:51 AM (UTC)
+ * Date: 31/08/2015 03:19 PM (UTC)
  * Copyright & License: (C) 2015 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
@@ -70,7 +70,9 @@ class EventListener implements Listener {
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["password-too-long"]));
 				}elseif($status == ServerAuth::ERR_MAX_IP_REACHED){
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["max-ip-reached"]));
-				}else{
+				}elseif($status == ServerAuth::CANCELLED){
+    				$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["operation-cancelled"]));
+    			}else{
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["generic"]));
 				}
 			}else{
@@ -89,7 +91,9 @@ class EventListener implements Listener {
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["login"]["already-login"]));
 				}elseif($status == ServerAuth::ERR_USER_NOT_REGISTERED){
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["user-not-registered"]));
-				}else{
+				}elseif($status == ServerAuth::CANCELLED){
+    				$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["operation-cancelled"]));
+    			}else{
 					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["generic"]));
 				}
 			}else{

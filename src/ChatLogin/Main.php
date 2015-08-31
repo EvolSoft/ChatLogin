@@ -1,10 +1,10 @@
 <?php
 
 /*
- * ChatLogin (v1.2) by EvolSoft
+ * ChatLogin (v1.3) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 15/07/2015 10:47 AM (UTC)
+ * Date: 31/08/2015 03:16 PM (UTC)
  * Copyright & License: (C) 2015 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
@@ -28,7 +28,7 @@ class Main extends PluginBase {
 	const PRODUCER = "EvolSoft";
 	
 	/** @var string VERSION Plugin version */
-	const VERSION = "1.2";
+	const VERSION = "1.3";
 	
 	/** @var string MAIN_WEBSITE Plugin producer website */
 	const MAIN_WEBSITE = "http://www.evolsoft.tk";
@@ -80,15 +80,15 @@ class Main extends PluginBase {
         $this->saveDefaultConfig();
         $this->logger = Server::getInstance()->getLogger();
         if($this->getServer()->getPluginManager()->getPlugin("ServerAuth")){
-    		if(ServerAuth::getAPI()->getAPIVersion() == "1.0.0"){
+    		if(ServerAuth::getAPI()->getAPIVersion() == "1.1.0"){
     			$this->logger->info($this->translateColors("&", Main::PREFIX . "&aPlugin Enabled!"));
     			$this->getCommand("chatlogin")->setExecutor(new Commands\Commands($this));
     			$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     		}else{
-    			$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease use ServerAuth (API 1.0.0). Plugin Disabled!"));
+    			$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease use ServerAuth (API 1.1.0). Plugin Disabled!"));
     		}
         }else{
-        	$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease install ServerAuth (API 1.0.0). Plugin Disabled!"));
+        	$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease install ServerAuth (API 1.1.0). Plugin Disabled!"));
         }
     }
 }
