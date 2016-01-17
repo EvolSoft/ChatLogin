@@ -9,7 +9,7 @@ PocketMine-MP plugins
 ## Requirements
 
 PocketMine-MP Alpha_1.4 API 1.11.0<br>
-**Dependency Plugins:** ServerAuth v2.00 API 1.1.0
+**Dependency Plugins:** ServerAuth v2.12 API 1.1.1
 
 ## Overview
 
@@ -38,8 +38,16 @@ PocketMine-MP Alpha_1.4 API 1.11.0<br>
 show-prefix: true
 #Register message
 register-message: "&7Type your password in chat to register"
+#Require password confirmation for registration
+password-confirm-required: true
+#Register confirmation message
+register-confirm-message: "&bRe-type your password to confirm registration"
+#No register permissions message
+no-register-permissions: "&cYou don't have permissions to register"
 #Login message
 login-message: "&7Type your password in chat to login"
+#No login permissions message
+no-login-permissions: "&cYou don't have permissions to login"
 ...
 ```
 
