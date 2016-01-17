@@ -1,11 +1,11 @@
 <?php
 
 /*
- * ChatLogin (v1.3) by EvolSoft
+ * ChatLogin (v1.4) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 14/05/2015 05:59 PM (UTC)
- * Copyright & License: (C) 2015 EvolSoft
+ * Date: 17/01/2015 12:12 AM (UTC)
+ * Copyright & License: (C) 2015-2016 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
 

@@ -1,11 +1,11 @@
 <?php
 
 /*
- * ChatLogin (v1.3) by EvolSoft
+ * ChatLogin (v1.4) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 31/08/2015 03:16 PM (UTC)
- * Copyright & License: (C) 2015 EvolSoft
+ * Date: 17/01/2015 10:21 AM (UTC)
+ * Copyright & License: (C) 2015-2016 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
 
@@ -28,7 +28,7 @@ class Main extends PluginBase {
 	const PRODUCER = "EvolSoft";
 	
 	/** @var string VERSION Plugin version */
-	const VERSION = "1.3";
+	const VERSION = "1.4";
 	
 	/** @var string MAIN_WEBSITE Plugin producer website */
 	const MAIN_WEBSITE = "http://www.evolsoft.tk";
@@ -37,6 +37,9 @@ class Main extends PluginBase {
 	
 	/** @var string PREFIX Plugin prefix */
 	const PREFIX = "&9[ChatLogin] ";
+	
+	/** @var array $confirm_users User awaiting confirmation */
+	public $confirm_users = array();
     
     /**
      * Translate Minecraft colors
@@ -80,15 +83,15 @@ class Main extends PluginBase {
         $this->saveDefaultConfig();
         $this->logger = Server::getInstance()->getLogger();
         if($this->getServer()->getPluginManager()->getPlugin("ServerAuth")){
-    		if(ServerAuth::getAPI()->getAPIVersion() == "1.1.0"){
+    		if(ServerAuth::getAPI()->getAPIVersion() == "1.1.1"){
     			$this->logger->info($this->translateColors("&", Main::PREFIX . "&aPlugin Enabled!"));
     			$this->getCommand("chatlogin")->setExecutor(new Commands\Commands($this));
     			$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     		}else{
-    			$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease use ServerAuth (API 1.1.0). Plugin Disabled!"));
+    			$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease use ServerAuth (API 1.1.1). Plugin Disabled!"));
     		}
         }else{
-        	$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease install ServerAuth (API 1.1.0). Plugin Disabled!"));
+        	$this->logger->error($this->translateColors("&", Main::PREFIX . "&cPlease install ServerAuth (API 1.1.1). Plugin Disabled!"));
         }
     }
 }

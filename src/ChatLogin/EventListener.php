@@ -1,11 +1,11 @@
 <?php
 
 /*
- * ChatLogin (v1.3) by EvolSoft
+ * ChatLogin (v1.4) by EvolSoft
  * Developer: EvolSoft (Flavius12)
  * Website: http://www.evolsoft.tk
- * Date: 31/08/2015 03:19 PM (UTC)
- * Copyright & License: (C) 2015 EvolSoft
+ * Date: 17/01/2015 11:37 AM (UTC)
+ * Copyright & License: (C) 2015-2016 EvolSoft
  * Licensed under MIT (https://github.com/EvolSoft/ChatLogin/blob/master/LICENSE)
  */
 
@@ -26,6 +26,9 @@ class EventListener implements Listener {
 	}
 	
 	public function onPlayerLogin(PlayerLoginEvent $event){
+		if(isset($this->plugin->confirm_users[strtolower($event->getPlayer()->getName())])){
+			unset($this->plugin->confirm_users[strtolower($event->getPlayer()->getName())]);
+		}
 		ServerAuth::getAPI()->enableLoginMessages(false);
 		ServerAuth::getAPI()->enableRegisterMessages(false);
 	}
@@ -58,25 +61,65 @@ class EventListener implements Listener {
 		}
 		if(!ServerAuth::getAPI()->isPlayerRegistered($player->getName())){
 			if($player->hasPermission("chatlogin.register")){
-				$status = ServerAuth::getAPI()->registerPlayer($player, $event->getMessage());
-				if($status == ServerAuth::SUCCESS){
-					ServerAuth::getAPI()->authenticatePlayer($player, $event->getMessage());
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["register"]["register-success"]));
-				}elseif($status == ServerAuth::ERR_USER_ALREADY_REGISTERED){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["register"]["already-registered"]));
-				}elseif($status == ServerAuth::ERR_PASSWORD_TOO_SHORT){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["password-too-short"]));
-				}elseif($status == ServerAuth::ERR_PASSWORD_TOO_LONG){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["password-too-long"]));
-				}elseif($status == ServerAuth::ERR_MAX_IP_REACHED){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["max-ip-reached"]));
-				}elseif($status == ServerAuth::CANCELLED){
-    				$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["operation-cancelled"]));
-    			}else{
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["generic"]));
+				//Check if confirmation is required
+				if($cfg["password-confirm-required"]){
+					if(!isset($this->plugin->confirm_users[strtolower($player->getName())])){
+						$this->plugin->confirm_users[strtolower($player->getName())] = $event->getMessage();
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-confirm-message"]));
+					}else{
+						//Check passwords
+						if($this->plugin->confirm_users[strtolower($player->getName())] == $event->getMessage()){
+							unset($this->plugin->confirm_users[strtolower($player->getName())]);
+							$status = ServerAuth::getAPI()->registerPlayer($player, $event->getMessage());
+							if($status == ServerAuth::SUCCESS){
+								ServerAuth::getAPI()->authenticatePlayer($player, $event->getMessage());
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["register"]["register-success"]));
+							}elseif($status == ServerAuth::ERR_USER_ALREADY_REGISTERED){
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["register"]["already-registered"]));
+							}elseif($status == ServerAuth::ERR_PASSWORD_TOO_SHORT){
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["password-too-short"]));
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+							}elseif($status == ServerAuth::ERR_PASSWORD_TOO_LONG){
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["password-too-long"]));
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+							}elseif($status == ServerAuth::ERR_MAX_IP_REACHED){
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["max-ip-reached"]));
+							}elseif($status == ServerAuth::CANCELLED){
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getCancelledMessage()));
+							}else{
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["generic"]));
+								$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+							}
+						}else{
+							unset($this->plugin->confirm_users[strtolower($player->getName())]);
+							$player->sendMessage($this->plugin->translateColors("&", $prefix .  ServerAuth::getAPI()->chlang["errors"]["password-no-match"]));
+							$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+						}
+					}
+				}else{
+					$status = ServerAuth::getAPI()->registerPlayer($player, $event->getMessage());
+					if($status == ServerAuth::SUCCESS){
+						ServerAuth::getAPI()->authenticatePlayer($player, $event->getMessage());
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["register"]["register-success"]));
+					}elseif($status == ServerAuth::ERR_USER_ALREADY_REGISTERED){
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["register"]["already-registered"]));
+					}elseif($status == ServerAuth::ERR_PASSWORD_TOO_SHORT){
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["password-too-short"]));
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+					}elseif($status == ServerAuth::ERR_PASSWORD_TOO_LONG){
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["password-too-long"]));
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+					}elseif($status == ServerAuth::ERR_MAX_IP_REACHED){
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["max-ip-reached"]));
+					}elseif($status == ServerAuth::CANCELLED){
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getCancelledMessage()));
+					}else{
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["generic"]));
+						$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["register-message"]));
+					}
 				}
 			}else{
-				$player->sendMessage($this->plugin->translateColors("&", $prefix . "&cYou don't have permissions to register"));
+				$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg['no-register-permissions']));
 			}
 			$event->setMessage("");
 			$event->setCancelled(true);
@@ -84,20 +127,22 @@ class EventListener implements Listener {
 			if($player->hasPermission("chatlogin.login")){
 				$status = ServerAuth::getAPI()->authenticatePlayer($player, $event->getMessage());
 				if($status == ServerAuth::SUCCESS){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["login"]["login-success"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["login"]["login-success"]));
 				}elseif($status == ServerAuth::ERR_WRONG_PASSWORD){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["wrong-password"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["wrong-password"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["login-message"]));
 				}elseif($status == ServerAuth::ERR_USER_ALREADY_AUTHENTICATED){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["login"]["already-login"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["login"]["already-login"]));
 				}elseif($status == ServerAuth::ERR_USER_NOT_REGISTERED){
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["user-not-registered"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["user-not-registered"]));
 				}elseif($status == ServerAuth::CANCELLED){
-    				$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["operation-cancelled"]));
+    				$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getCancelledMessage()));
     			}else{
-					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->getConfigLanguage()->getAll()["errors"]["generic"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . ServerAuth::getAPI()->chlang["errors"]["generic"]));
+					$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg["login-message"]));
 				}
 			}else{
-				$player->sendMessage($this->plugin->translateColors("&", $prefix . "&cYou don't have permissions to login"));
+				$player->sendMessage($this->plugin->translateColors("&", $prefix . $cfg['no-login-permissions']));
 			}
 			$event->setMessage("");
 			$event->setCancelled(true);
